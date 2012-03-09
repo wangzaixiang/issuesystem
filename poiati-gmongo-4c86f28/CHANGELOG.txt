@@ -1,0 +1,40 @@
+* 0.9.5
+  - Upgraded to mongo-java-driver version 2.7.3
+* 0.9.4
+  - Fix for #10 - null-safe operator in Patcher for null property values in map -> db object conversion (needed to work with Spock)
+* 0.9.3
+  - com.mongodb.DBCollection#save now set an _id property in the object passed as argument when no _id is specified
+  - com.mongodb.DBCollection#insert now set an _id property in the object passed as argument when no _id is specified
+  - Now using Groovy version 1.8.5
+  - Now using mongo-java-driver version 2.7.2
+* 0.9.2
+  - Added support to com.mongodb.DBCollection#findAndModify
+  - Added support to com.mongodb.DBCollection#findAndRemove
+* 0.9.1
+  - Moved to groovy 1.7.10 because of backward compatibility
+* 0.9
+  - Added support to insert methods with WriteConcern
+  - Added support and test to com.mongodb.DBRef
+  - Added constructor GMongo( MongoUri )
+  - Groovy version updated to 1.8.1
+  - Updated mongo-java-driver to version 2.6.5
+* 0.8
+  - Fixed a memory leak introduced in version 0.7
+* 0.7
+  - Replica Set Support
+  - Added a constructor to com.gmongo.GMongo that take a com.mongodb.Mongo instance
+  - Support for com.mongodb.DBCursor#sort and other cursor methods
+  - groovy.lang.GString is now correctly handled by GMongo. Before 0.7 it can't be used as replacement for Strings in DBCollection methods
+  - Support for Groovy 1.7.7 and mongo-java-driver 2.4
+
+* 0.6
+  - Collections truth. Empty collections are evaluated to false and non empty are evaluated to true in logical expression
+  - Better internal error handling
+  - Changed mongo-java-driver to version 2.1
+  - Changed Groovy version to 1.7.4
+
+* 0.5
+  - Improved error handling in com.mongodb.DB#inRequest (now this method calls com.mongodb.DB#requestDone  even if the closure throws an exception)
+
+* 0.5.1
+  - Fixed a bug with com.mongodb.DB#createCollection
