@@ -23,7 +23,10 @@ class TestFlowEngine {
 //		Flow flow = flowengine.getFlow("bug")
 		Flow bugFlow = BugFlow2.BugFlow
 		
-		FlowInstance bug = flowengine.startFlow(subject:"Simple Java Bug", creator: "wangzx", bugFlow)
+		Map args = [subject: "Simple Java Bug",
+			creator: "wangzx"
+			]
+		FlowInstance bug = flowengine.startFlow(bugFlow, args)
 		
 		println bug
 		

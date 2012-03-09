@@ -1,5 +1,7 @@
 package com.duowan.yy.sysop.issues.flow
 
+import groovy.lang.Closure;
+
 import java.util.Map;
 
 class FlowBuilder extends BuilderSupport {
@@ -43,12 +45,13 @@ class FlowBuilder extends BuilderSupport {
 			case "actions":
 				node = [];							break;
 			case "action":
-				node = new FlowAction(attributes);	break
+				node = new FlowAction(attributes);	break;
 		}
 		if(value != null)
 			node.name = value
 		return node
 	}
+	
 
 	@Override
 	protected void nodeCompleted(Object parent, Object node) {
@@ -91,5 +94,13 @@ class FlowBuilder extends BuilderSupport {
 	void propertyMissing(String name, value) {
 		current[name] = value
 	}
+	
+	void presave(Closure<?> closure){
+		current.presave.add FlowCode.from(closure)
+	}
+	void postsave(Closure<?> closure){
+		current.postsave.add FlowCode.from(closure)
+	}
+
 }
 

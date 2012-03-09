@@ -32,4 +32,10 @@ class FlowInstance {
 	public String toString() {
 		return items.toString()
 	}
+	
+	Object asType(Class type){
+		if(type == Map)
+			return items;
+		return null
+	}
 }

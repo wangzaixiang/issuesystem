@@ -14,4 +14,10 @@ class FlowCode {
 	@XmlTransient
 	Closure<?>	compiled;
 	
+	static FlowCode from(String source){
+		return new FlowCode(source: source)
+	}
+	static FlowCode from(Closure<?> closure){
+		return new FlowCode(source: "//unknown source", compiled: closure)
+	}
 }

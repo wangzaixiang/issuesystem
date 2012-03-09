@@ -17,18 +17,13 @@ class FlowAction {
 	String	defaultTarget;
 	
 	@XmlTransient
-	List<FlowCode> preActions = []
-
-	@XmlTransient
-	List<FlowCode> actions;
+	List<FlowCode> presave = []
 	
 	@XmlTransient
-	List<FlowCode> postActions;
+	List<FlowCode> postsave = []
 	
-	void setPrecondition(Closure<?> code){
-		precondition = new FlowCode(compiled: code, source: "//unknown code")
+	void setPrecondition(Object code){
+		precondition = FlowCode.from code
 	}
-	void setPrecondtion(String source){
-		precondition = new FlowCode(source: source)
-	}
+	
 }

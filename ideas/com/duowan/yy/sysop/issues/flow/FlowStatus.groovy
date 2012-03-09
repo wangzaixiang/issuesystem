@@ -1,5 +1,7 @@
 package com.duowan.yy.sysop.issues.flow
 
+import groovy.lang.Closure;
+
 import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlElement;
@@ -17,4 +19,9 @@ class FlowStatus {
 	
 	FlowCode onEntry;
 	FlowCode onExit;
+	
+	void setOnEntry(Object code){
+		onEntry = FlowCode.from(code)
+	}
+
 }

@@ -22,7 +22,7 @@ class Flow {
 		Field getField(String name){
 			return fieldsByName[name]
 		}
-		Field getAction(String){
+		FlowAction getAction(String name){
 			return actionsByName[name]
 		}
 	}
