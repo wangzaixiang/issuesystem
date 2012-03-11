@@ -19,19 +19,22 @@ class BugFlow2 {
 			field("create-date", label:"创建时间")
 			field("due-date", label: "过期时间")
 		}
-		startStatus = "open"
 		
 		statuses {
 
 			status("open") {
 				
-				onEntry = {
+				onEntry = {	// 当流程进入此状态时，产生onEntry事件
 					
 				}
 				
 				action("in-progress") {
 					description = "正在处理"
 					defaultTarget = "in-progress"
+				}
+				
+				onExit = {	// 当流程离开此状态时，会产生onExit事件
+					
 				}
 			}
 

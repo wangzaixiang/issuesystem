@@ -25,44 +25,55 @@ class FlowEngineImpl implements FlowEngine {
 		assert false
 	}
 
+	/**
+	 * 启动一个流程，实际上是执行流程的<init> action
+	 */
 	@Override
 	public FlowInstance startFlow(Flow flow, Map<String,Object> args) {
 		
-		FlowStatus start = flow.getStatus(flow.startStatus)
 		FlowInstance instance = new FlowInstance(args)
 		
 		int nextid = nextFlowInstanceId(flow.name);
 		instance._id = "${flow.name}-${nextid}"
-		instance.status = flow.startStatus;
 		
 		FlowAction init = flow.getAction("<init>")
-		if(init != null){
-			init.presave.each { FlowCode code->
-				if(code.compiled) {
-					Closure closure = code.compiled;
-					Binding binding = new Binding(self: instance)
-					closure.setDelegate(binding)
-					closure.setResolveStrategy(Closure.DELEGATE_ONLY)
-					closure.call()
-				}
+		if(init == null)
+			throw new RuntimeException("每个流程必须有 <init> 动作");
+		
+		executeFlowAction(flow, instance, init);
+			
+		return instance;
+	}
+	
+	void executeFlowAction(Flow flow, FlowInstance instance, FlowAction action) {
+
+		// check precondition
+		
+		if(action.defaultTarget != null)
+			instance.status = action.defaultTarget;
+			
+		action.presave.each { FlowCode code->
+			if(code.compiled) {
+				Closure closure = code.compiled;
+				Binding binding = new Binding(self: instance)
+				closure.setDelegate(binding)
+				closure.setResolveStrategy(Closure.DELEGATE_ONLY)
+				closure.call()
 			}
 		}
 		
-		mongo["issues"].insert(instance as Map)
+		mongo["issues"].save(instance as Map)
 		
-		if(init != null){
-			init.postsave.each { FlowCode code->
-				if(code.compiled) {
-					Closure closure = code.compiled;
-					Binding binding = new Binding(self: instance)
-					closure.setDelegate(binding)
-					closure.setResolveStrategy(Closure.DELEGATE_ONLY)
-					closure.call()
-				}
+		action.postsave.each { FlowCode code->
+			if(code.compiled) {
+				Closure closure = code.compiled;
+				Binding binding = new Binding(self: instance)
+				closure.setDelegate(binding)
+				closure.setResolveStrategy(Closure.DELEGATE_ONLY)
+				closure.call()
 			}
 		}
 
-		return instance;
 	}
 	
 	int	nextFlowInstanceId(String flowName) {
